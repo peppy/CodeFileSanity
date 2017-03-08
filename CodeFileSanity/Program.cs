@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
 using System.Text.RegularExpressions;
 
 namespace CodeFileSanity
@@ -93,17 +94,24 @@ namespace CodeFileSanity
             //Add-AppveyorCompilationMessage "Unreachable code detected" -Category Warning -FileName "Program.cs" -Line 1 -Column 3
 
             if (hasAppveyor)
-                runAppveyor($"{message} -Category Warning -FileName \"{filename}\"");
+                runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\"");
         }
 
         private static bool runAppveyor(string args)
         {
             try
             {
-                Process.Start("appveyor", args);
+                using (PowerShell ps = PowerShell.Create())
+                {
+                    ps.AddScript($"Add-AppveyorCompilationMessage {args}");
+                    ps.Invoke();
+                }
                 return true;
             }
-            catch { }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             return false;
         }
