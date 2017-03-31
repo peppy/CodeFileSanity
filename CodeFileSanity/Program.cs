@@ -91,6 +91,12 @@ namespace CodeFileSanity
             {
                 report(file, $"License header missing");
             }
+
+            if ((line = findMatchingLine(text, " \r\n")) >= 0)
+            {
+                report(file, $"White space needs to be trimmed", line);
+            }
+            }
         }
 
         private static int findMatchingLine(string input, string pattern, RegexOptions options = RegexOptions.None)
