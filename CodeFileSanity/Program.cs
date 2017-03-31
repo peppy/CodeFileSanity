@@ -92,7 +92,7 @@ namespace CodeFileSanity
                 report(file, $"License header missing");
             }
 
-            if ((line = findMatchingLine(text, " \r\n")) >= 0)
+            if ((line = findMatchingLine(text, "^((?!///).)* \r\n", RegexOptions.Multiline)) >= 0)
             {
                 report(file, $"White space needs to be trimmed", line);
             }
