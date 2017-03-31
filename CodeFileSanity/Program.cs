@@ -15,12 +15,17 @@ namespace CodeFileSanity
             "packages"
         };
 
+        static bool hasErrors;
+
         static bool hasAppveyor;
 
         static void Main(string[] args)
         {
             hasAppveyor = runAppveyor("");
             checkDirectory(".");
+
+            if (hasErrors)
+                Environment.ExitCode = -1;
         }
 
         private static string getLicenseHeader(string path)
@@ -91,7 +96,7 @@ namespace CodeFileSanity
         {
             Console.WriteLine($"{filename}: {message}");
 
-            //Add-AppveyorCompilationMessage "Unreachable code detected" -Category Warning -FileName "Program.cs" -Line 1 -Column 3
+            hasErrors = true;
 
             if (hasAppveyor)
                 runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\"");
