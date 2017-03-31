@@ -80,16 +80,15 @@ namespace CodeFileSanity
         {
             string text = File.ReadAllText(file);
 
-            if (licenseHeader != null && !text.StartsWith(licenseHeader))
-            {
-                report(file, $"License header missing");
-            }
-
             if (Regex.IsMatch(text, "\r[^\n].", RegexOptions.Multiline))
             {
                 report(file, $"Incorrect line endings");
             }
 
+            if (licenseHeader != null && !text.StartsWith(licenseHeader))
+            {
+                report(file, $"License header missing");
+            }
         }
 
         private static void report(string filename, string message)
