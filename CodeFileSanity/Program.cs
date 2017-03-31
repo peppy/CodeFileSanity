@@ -101,6 +101,14 @@ namespace CodeFileSanity
             {
                 report(file, $"Found tab character", line);
             }
+
+            if (Path.GetFileName(file) == "AssemblyInfo.cs")
+                return;
+
+            if (findMatchingLine(text, $"(enum|struct|class|interface) {Path.GetFileNameWithoutExtension(file)}") < 0)
+            {
+                report(file, $"Filename does not match contained type.");
+            }
         }
 
         private static int findMatchingLine(string input, string pattern, RegexOptions options = RegexOptions.None)
