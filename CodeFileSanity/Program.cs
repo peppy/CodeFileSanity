@@ -80,9 +80,11 @@ namespace CodeFileSanity
         {
             string text = File.ReadAllText(file);
 
-            if (Regex.IsMatch(text, "\r[^\n].", RegexOptions.Multiline))
+            int line = 0;
+
+            if ((line = findMatchingLine(text, "\r[^\n].", RegexOptions.Multiline)) >= 0)
             {
-                report(file, $"Incorrect line endings");
+                report(file, $"Incorrect line endings", line);
             }
 
             if (licenseHeader != null && !text.StartsWith(licenseHeader))
@@ -91,14 +93,22 @@ namespace CodeFileSanity
             }
         }
 
-        private static void report(string filename, string message)
+        private static int findMatchingLine(string input, string pattern, RegexOptions options = RegexOptions.None)
         {
-            Console.WriteLine($"{filename}: {message}");
+            var match = Regex.Match(input, pattern, options);
+            return match.Success ? getLineNumber(input, match.Index) : -1;
+        }
+
+        private static int getLineNumber(string input, int index) => input.Remove(index).Count(c => c == '\n') + 1;
+
+        private static void report(string filename, string message, int line = 0)
+        {
+            Console.WriteLine($"{filename}:{line}: {message}");
 
             hasErrors = true;
 
             if (hasAppveyor)
-                runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\"");
+                runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\" -Line {line}");
         }
 
         private static bool runAppveyor(string args)
