@@ -96,6 +96,10 @@ namespace CodeFileSanity
             {
                 report(file, $"White space needs to be trimmed", line);
             }
+
+            if ((line = findMatchingLine(text, "\t")) >= 0)
+            {
+                report(file, $"Found tab character", line);
             }
         }
 
