@@ -12,6 +12,7 @@ namespace CodeFileSanity
         static string[] ignore_paths = {
             "bin",
             "obj",
+            "migrations",
             "packages"
         };
 
@@ -64,7 +65,7 @@ namespace CodeFileSanity
 
         private static void checkDirectory(string path)
         {
-            if (ignore_paths.Contains(path.Split(Path.DirectorySeparatorChar).Last()))
+            if (ignore_paths.Contains(path.Split(Path.DirectorySeparatorChar).Last().ToLower()))
                 return;
 
             foreach (var sub in Directory.GetDirectories(path))
