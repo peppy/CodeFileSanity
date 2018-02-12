@@ -141,9 +141,9 @@ namespace CodeFileSanity
                 }
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
+                // we don't have appveyor and don't care
             }
 
             return false;
