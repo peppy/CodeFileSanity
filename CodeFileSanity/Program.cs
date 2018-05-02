@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -81,11 +82,11 @@ namespace CodeFileSanity
         {
             string text = File.ReadAllText(file);
 
-            int line = 0;
+            List<int> lines = new List<int>();
 
-            if ((line = findMatchingLine(text, "\r[^\n].", RegexOptions.Multiline)) >= 0)
+            if ((lines = findMatchingLines(text, "\r[^\n].", RegexOptions.Multiline)).Count > 0)
             {
-                report(file, $"Incorrect line endings", line);
+                report(file, $"Incorrect line endings", lines);
             }
 
             if (licenseHeader != null && !text.StartsWith(licenseHeader))
@@ -93,32 +94,47 @@ namespace CodeFileSanity
                 report(file, $"License header missing");
             }
 
-            if ((line = findMatchingLine(text, "^((?!///).)* \r\n", RegexOptions.Multiline)) >= 0)
+            if ((lines = findMatchingLines(text, "^((?!///).)* \r\n", RegexOptions.Multiline)).Count > 0)
             {
-                report(file, $"White space needs to be trimmed", line);
+                report(file, $"White space needs to be trimmed", lines);
             }
 
-            if ((line = findMatchingLine(text, "\t")) >= 0)
+            if ((lines = findMatchingLines(text, "\t")).Count > 0)
             {
-                report(file, $"Found tab character", line);
+                report(file, $"Found tab character", lines);
             }
 
             if (Path.GetFileName(file) == "AssemblyInfo.cs")
                 return;
 
-            if (findMatchingLine(text, $"(enum|struct|class|interface) {Path.GetFileNameWithoutExtension(file).Split('_').First()}") < 0)
+            if (findMatchingLines(text, $"(enum|struct|class|interface) {Path.GetFileNameWithoutExtension(file).Split('_').First()}").Count > 0)
             {
                 report(file, $"Filename does not match contained type.");
             }
         }
 
-        private static int findMatchingLine(string input, string pattern, RegexOptions options = RegexOptions.None)
+        private static List<int> findMatchingLines(string input, string pattern, RegexOptions options = RegexOptions.None)
         {
-            var match = Regex.Match(input, pattern, options);
-            return match.Success ? getLineNumber(input, match.Index) : -1;
+            MatchCollection matches = Regex.Matches(input, pattern, options);
+            List<int> toReturn = new List<int>();
+            foreach (Match match in matches)
+            {
+                toReturn.Add(getLineNumber(input, match.Index));
+            }
+            return toReturn;
         }
 
         private static int getLineNumber(string input, int index) => input.Remove(index).Count(c => c == '\n') + 1;
+
+        private static void report(string filename, string message, List<int> lines)
+        {
+            lines.ForEach((line) => Console.WriteLine($"{filename}:{line}: {message}"));
+
+            hasErrors = true;
+
+            if (hasAppveyor)
+                lines.ForEach((line) => runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\" -Line {line}"));
+        }
 
         private static void report(string filename, string message, int line = 0)
         {
