@@ -126,15 +126,7 @@ namespace CodeFileSanity
 
         private static int getLineNumber(string input, int index) => input.Remove(index).Count(c => c == '\n') + 1;
 
-        private static void report(string filename, string message, List<int> lines)
-        {
-            lines.ForEach((line) => Console.WriteLine($"{filename}:{line}: {message}"));
-
-            hasErrors = true;
-
-            if (hasAppveyor)
-                lines.ForEach((line) => runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\" -Line {line}"));
-        }
+        private static void report(string filename, string message, List<int> lines) => lines.ForEach((line) => report(filename, message, line));
 
         private static void report(string filename, string message, int line = 0)
         {
