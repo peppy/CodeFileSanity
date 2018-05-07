@@ -107,7 +107,7 @@ namespace CodeFileSanity
             if (Path.GetFileName(file) == "AssemblyInfo.cs")
                 return;
 
-            if (findMatchingLines(text, $"(enum|struct|class|interface) {Path.GetFileNameWithoutExtension(file).Split('_').First()}").Count > 0)
+            if (findMatchingLines(text, $"(enum|struct|class|interface) {Path.GetFileNameWithoutExtension(file).Split('_').First()}").Count == 0)
             {
                 report(file, $"Filename does not match contained type.");
             }
