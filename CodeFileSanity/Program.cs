@@ -22,7 +22,7 @@ namespace CodeFileSanity
 
         static void Main(string[] args)
         {
-            hasAppveyor = runAppveyor("");
+            hasAppveyor = Environment.GetEnvironmentVariable("APPVEYOR")?.ToLower().Equals("true") ?? false;
             checkDirectory(".");
 
             if (hasErrors)
