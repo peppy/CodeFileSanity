@@ -144,7 +144,7 @@ namespace CodeFileSanity
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = "appveyor",
-                    ArgumentList = { "AddMessage", args }
+                    Arguments = $"AddMessage -Message {args}"
                 });
 
                 return true;
