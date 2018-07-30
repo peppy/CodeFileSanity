@@ -139,6 +139,9 @@ namespace CodeFileSanity
 
         private static bool runAppveyor(string args)
         {
+            if (string.IsNullOrEmpty(args))
+                args = "\"\"";
+
             try
             {
                 Process.Start(new ProcessStartInfo
