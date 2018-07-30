@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management.Automation;
 using System.Text.RegularExpressions;
 
 namespace CodeFileSanity
@@ -142,11 +141,12 @@ namespace CodeFileSanity
         {
             try
             {
-                using (PowerShell ps = PowerShell.Create())
+                Process.Start(new ProcessStartInfo
                 {
-                    ps.AddScript($"Add-AppveyorCompilationMessage {args}");
-                    ps.Invoke();
-                }
+                    FileName = "appveyor",
+                    ArgumentList = { "AddMessage", args }
+                });
+
                 return true;
             }
             catch
