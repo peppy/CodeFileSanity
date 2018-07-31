@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management.Automation;
 using System.Text.RegularExpressions;
 
 namespace CodeFileSanity
@@ -23,7 +22,7 @@ namespace CodeFileSanity
 
         static void Main(string[] args)
         {
-            hasAppveyor = runAppveyor("");
+            hasAppveyor = Environment.GetEnvironmentVariable("APPVEYOR")?.ToLower().Equals("true") ?? false;
             checkDirectory(".");
 
             if (hasErrors)
@@ -140,13 +139,17 @@ namespace CodeFileSanity
 
         private static bool runAppveyor(string args)
         {
+            if (string.IsNullOrEmpty(args))
+                args = "\"\"";
+
             try
             {
-                using (PowerShell ps = PowerShell.Create())
+                Process.Start(new ProcessStartInfo
                 {
-                    ps.AddScript($"Add-AppveyorCompilationMessage {args}");
-                    ps.Invoke();
-                }
+                    FileName = "appveyor",
+                    Arguments = $"AddCompilationMessage {args}"
+                });
+
                 return true;
             }
             catch
