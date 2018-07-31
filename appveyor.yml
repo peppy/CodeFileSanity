@@ -2,7 +2,7 @@ version: '{build}'
 image: Visual Studio 2017
 configuration: Release
 build_script:
-  - dotnet pack /p:Version=%APPVEYOR_BUILD_VERSION% /p:GenerateDocumentationFile=true
+  - dotnet pack /p:Version=0.0.%APPVEYOR_BUILD_VERSION% /p:GenerateDocumentationFile=true
 artifacts:
   - path: CodeFileSanity/bin/Release/*.nupkg
 deploy:
