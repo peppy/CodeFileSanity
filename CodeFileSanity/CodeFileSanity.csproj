@@ -9,4 +9,8 @@
     <Company>ppy Pty Ltd</Company>
     <Copyright>ppy Pty Ltd 2007-2018</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cake.Core" Version="0.29.0" />
+  </ItemGroup>
 </Project>
