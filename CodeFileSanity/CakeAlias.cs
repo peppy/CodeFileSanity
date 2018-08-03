@@ -13,7 +13,7 @@ namespace CodeFileSanity
 
             CodeSanityValidator.hasAppveyor = settings.IsAppveyorBuild;
 
-            CodeSanityValidator.checkDirectory(".");
+            CodeSanityValidator.checkDirectory(settings.RootDirectory);
 
             if (CodeSanityValidator.hasErrors)
                 throw new CakeException("Code sanity validation failed.");
