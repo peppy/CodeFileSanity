@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Project">
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <IsPackable>True</IsPackable>
-    <PackAsTool>True</PackAsTool>
     <Title>CodeFileSanity</Title>
     <Product>CodeFileSanity</Product>
     <Company>ppy Pty Ltd</Company>
