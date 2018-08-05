@@ -19,13 +19,13 @@ namespace CodeFileSanity
 
         public bool HasErrors { get; private set; }
 
-        readonly bool hasAppveyor;
+        readonly bool isAppveyorBuild;
 
         readonly string rootDirectory;
 
         public CodeSanityValidator(ValidateCodeSanitySettings settings) 
         {
-            hasAppveyor = settings.IsAppveyorBuild;
+            isAppveyorBuild = settings.IsAppveyorBuild;
             rootDirectory = settings.RootDirectory;
         }
 
@@ -136,7 +136,7 @@ namespace CodeFileSanity
 
             HasErrors = true;
 
-            if (hasAppveyor)
+            if (isAppveyorBuild)
                 runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\" -Line {line}");
         }
 
