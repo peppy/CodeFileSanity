@@ -17,6 +17,6 @@ namespace CodeFileSanity
             if (codeSanityValidator.HasErrors)
                 Environment.ExitCode = -1;
         }
-        
+
     }
 }
