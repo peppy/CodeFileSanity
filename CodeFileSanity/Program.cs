@@ -4,14 +4,19 @@ namespace CodeFileSanity
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            CodeSanityValidator.hasAppveyor = Environment.GetEnvironmentVariable("APPVEYOR")?.ToLower().Equals("true") ?? false;
+            var codeSanityValidator = new CodeSanityValidator(new ValidateCodeSanitySettings {
+                IsAppveyorBuild = Environment.GetEnvironmentVariable("APPVEYOR")?.ToLower().Equals("true") ?? false,
+                RootDirectory = "."
+            });
 
-            CodeSanityValidator.checkDirectory(".");
+            codeSanityValidator.Validate();
 
-            if (CodeSanityValidator.hasErrors)
+            if (codeSanityValidator.HasErrors)
                 Environment.ExitCode = -1;
         }
+        
     }
 }
