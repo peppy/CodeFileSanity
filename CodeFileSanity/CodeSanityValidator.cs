@@ -11,6 +11,8 @@ namespace CodeFileSanity
     {
 
         readonly string[] ignore_paths = {
+        private readonly string[] ignore_paths = {
+            ".git",
             "bin",
             "obj",
             "migrations",
