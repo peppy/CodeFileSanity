@@ -4,7 +4,6 @@ namespace CodeFileSanity
 {
     class Program
     {
-
         static void Main(string[] args)
         {
             var codeSanityValidator = new CodeSanityValidator(new ValidateCodeSanitySettings {
@@ -17,6 +16,5 @@ namespace CodeFileSanity
             if (codeSanityValidator.HasErrors)
                 Environment.ExitCode = -1;
         }
-
     }
 }

@@ -9,7 +9,6 @@ namespace CodeFileSanity
 {
     public class CodeSanityValidator
     {
-
         private readonly string[] ignore_paths = {
             ".git",
             "bin",
