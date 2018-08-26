@@ -10,7 +10,6 @@ namespace CodeFileSanity
     public class CodeSanityValidator
     {
 
-        readonly string[] ignore_paths = {
         private readonly string[] ignore_paths = {
             ".git",
             "bin",
@@ -21,9 +20,9 @@ namespace CodeFileSanity
 
         public bool HasErrors { get; private set; }
 
-        readonly bool isAppveyorBuild;
+        private readonly bool isAppveyorBuild;
 
-        readonly string rootDirectory;
+        private readonly string rootDirectory;
 
         public CodeSanityValidator(ValidateCodeSanitySettings settings) 
         {
@@ -34,7 +33,7 @@ namespace CodeFileSanity
         public void Validate() 
             => checkDirectory(rootDirectory);
 
-        string getLicenseHeader(string path)
+        private string getLicenseHeader(string path)
         {
             string filename;
 
@@ -68,7 +67,7 @@ namespace CodeFileSanity
             return licenseHeader;
         }
 
-        void checkDirectory(string path)
+        private void checkDirectory(string path)
         {
             if (ignore_paths.Contains(path.Split(Path.DirectorySeparatorChar).Last().ToLower()))
                 return;
@@ -82,7 +81,7 @@ namespace CodeFileSanity
                 checkFile(file, license);
         }
 
-        void checkFile(string file, string licenseHeader)
+        private void checkFile(string file, string licenseHeader)
         {
             string text = File.ReadAllText(file);
 
@@ -117,7 +116,7 @@ namespace CodeFileSanity
             }
         }
 
-        List<int> findMatchingLines(string input, string pattern, RegexOptions options = RegexOptions.None)
+        private List<int> findMatchingLines(string input, string pattern, RegexOptions options = RegexOptions.None)
         {
             MatchCollection matches = Regex.Matches(input, pattern, options);
             List<int> toReturn = new List<int>();
@@ -128,11 +127,11 @@ namespace CodeFileSanity
             return toReturn;
         }
 
-        int getLineNumber(string input, int index) => input.Remove(index).Count(c => c == '\n') + 1;
+        private int getLineNumber(string input, int index) => input.Remove(index).Count(c => c == '\n') + 1;
 
-        void report(string filename, string message, List<int> lines) => lines.ForEach((line) => report(filename, message, line));
+        private void report(string filename, string message, List<int> lines) => lines.ForEach((line) => report(filename, message, line));
 
-        void report(string filename, string message, int line = 0)
+        private void report(string filename, string message, int line = 0)
         {
             Console.WriteLine($"{filename}:{line}: {message}");
 
@@ -142,7 +141,7 @@ namespace CodeFileSanity
                 runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\" -Line {line}");
         }
 
-        bool runAppveyor(string args)
+        private bool runAppveyor(string args)
         {
             if (string.IsNullOrEmpty(args))
                 args = "\"\"";
@@ -164,6 +163,5 @@ namespace CodeFileSanity
 
             return false;
         }
-
     }
 }
