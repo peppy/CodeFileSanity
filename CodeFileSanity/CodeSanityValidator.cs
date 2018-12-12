@@ -86,6 +86,9 @@ namespace CodeFileSanity
 
             List<int> lines = new List<int>();
 
+            if (Path.GetFileName(file) == "Resource.designer.cs")
+                return;
+
             if ((lines = findMatchingLines(text, "\r[^\n].", RegexOptions.Multiline)).Count > 0)
             {
                 report(file, $"Incorrect line endings", lines);
