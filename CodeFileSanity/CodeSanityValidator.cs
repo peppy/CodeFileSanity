@@ -9,7 +9,8 @@ namespace CodeFileSanity
 {
     public class CodeSanityValidator
     {
-        private readonly string[] ignore_paths = {
+        private readonly string[] ignore_paths =
+        {
             ".git",
             "bin",
             "obj",
@@ -23,13 +24,13 @@ namespace CodeFileSanity
 
         private readonly string rootDirectory;
 
-        public CodeSanityValidator(ValidateCodeSanitySettings settings) 
+        public CodeSanityValidator(ValidateCodeSanitySettings settings)
         {
             isAppveyorBuild = settings.IsAppveyorBuild;
             rootDirectory = settings.RootDirectory;
         }
 
-        public void Validate() 
+        public void Validate()
             => checkDirectory(rootDirectory);
 
         private string getLicenseHeader(string path)
@@ -84,7 +85,10 @@ namespace CodeFileSanity
         {
             string text = File.ReadAllText(file);
 
-            List<int> lines = new List<int>();
+            if (file.IndexOf(".designer.", StringComparison.OrdinalIgnoreCase) >= 0)
+                return;
+
+            List<int> lines;
 
             if ((lines = findMatchingLines(text, "\r[^\n].", RegexOptions.Multiline)).Count > 0)
             {
@@ -123,6 +127,7 @@ namespace CodeFileSanity
             {
                 toReturn.Add(getLineNumber(input, match.Index));
             }
+
             return toReturn;
         }
 
