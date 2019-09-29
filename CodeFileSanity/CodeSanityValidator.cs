@@ -9,7 +9,7 @@ namespace CodeFileSanity
 {
     public class CodeSanityValidator
     {
-        private readonly string[] ignore_paths =
+        private static readonly string[] ignore_paths =
         {
             ".git",
             "bin",
@@ -145,7 +145,7 @@ namespace CodeFileSanity
                 runAppveyor($"\"{message}\" -Category Error -FileName \"{filename.Substring(2)}\" -Line {line}");
         }
 
-        private bool runAppveyor(string args)
+        private void runAppveyor(string args)
         {
             if (string.IsNullOrEmpty(args))
                 args = "\"\"";
@@ -157,15 +157,11 @@ namespace CodeFileSanity
                     FileName = "appveyor",
                     Arguments = $"AddCompilationMessage {args}"
                 });
-
-                return true;
             }
             catch
             {
                 // we don't have appveyor and don't care
             }
-
-            return false;
         }
     }
 }

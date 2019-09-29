@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Project">
-    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <IsPackable>True</IsPackable>
     <PackAsTool>True</PackAsTool>
     <Title>CodeFileSanity</Title>
     <Product>CodeFileSanity</Product>
     <Company>ppy Pty Ltd</Company>
-    <Copyright>ppy Pty Ltd 2007-2018</Copyright>
+    <Copyright>ppy Pty Ltd 2007-2019</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cake.Core" Version="0.34.1" />
+    <PackageReference Include="Cake.Core" Version="0.35.0" />
   </ItemGroup>
 </Project>

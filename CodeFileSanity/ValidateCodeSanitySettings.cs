@@ -1,5 +1,3 @@
-using Cake.Core.Tooling;
-
 namespace CodeFileSanity
 {
     public class ValidateCodeSanitySettings

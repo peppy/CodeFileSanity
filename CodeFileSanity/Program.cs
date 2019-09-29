@@ -2,9 +2,9 @@
 
 namespace CodeFileSanity
 {
-    class Program
+    static class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var codeSanityValidator = new CodeSanityValidator(new ValidateCodeSanitySettings {
                 IsAppveyorBuild = Environment.GetEnvironmentVariable("APPVEYOR")?.ToLower().Equals("true") ?? false,
