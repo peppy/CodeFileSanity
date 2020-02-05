@@ -15,7 +15,8 @@ namespace CodeFileSanity
             "bin",
             "obj",
             "migrations",
-            "packages"
+            "packages",
+            "template-game"
         };
 
         public bool HasErrors { get; private set; }
