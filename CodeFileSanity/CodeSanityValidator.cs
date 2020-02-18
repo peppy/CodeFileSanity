@@ -14,7 +14,7 @@ namespace CodeFileSanity
             ".git",
             "bin",
             "obj",
-            "migrations",
+            "Migrations",
             "packages",
         };
 
@@ -73,7 +73,7 @@ namespace CodeFileSanity
 
         private void checkDirectory(string path)
         {
-            if (ignorePaths.Contains(path.Split(Path.DirectorySeparatorChar).Last().ToLower()))
+            if (ignorePaths.Contains(path.Split(Path.DirectorySeparatorChar).Last()))
                 return;
 
             foreach (var sub in Directory.GetDirectories(path))
