@@ -9,14 +9,13 @@ namespace CodeFileSanity
 {
     public class CodeSanityValidator
     {
-        private static readonly string[] ignore_paths =
+        private readonly string[] ignorePaths =
         {
             ".git",
             "bin",
             "obj",
             "migrations",
             "packages",
-            "template-game"
         };
 
         public bool HasErrors { get; private set; }
@@ -29,6 +28,10 @@ namespace CodeFileSanity
         {
             isAppveyorBuild = settings.IsAppveyorBuild;
             rootDirectory = settings.RootDirectory;
+
+            string ignoreFile = Path.Combine(rootDirectory, ".cfsignore");
+            if (File.Exists(ignoreFile))
+                ignorePaths = ignorePaths.Union(File.ReadAllLines(ignoreFile)).ToArray();
         }
 
         public void Validate()
@@ -70,7 +73,7 @@ namespace CodeFileSanity
 
         private void checkDirectory(string path)
         {
-            if (ignore_paths.Contains(path.Split(Path.DirectorySeparatorChar).Last().ToLower()))
+            if (ignorePaths.Contains(path.Split(Path.DirectorySeparatorChar).Last().ToLower()))
                 return;
 
             foreach (var sub in Directory.GetDirectories(path))
